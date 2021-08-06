@@ -1,3 +1,6 @@
+umhook documentation!! https://docs.ultimatemember.com/article/1324-hooks-list?hook=um_registration_user_role
+
+---------------------------
 Um_user redirect after register!!
 
 add_action( 'um_after_save_registration_details', 'my_after_save_registration_details', 1, 2 );
