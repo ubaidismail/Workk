@@ -1,0 +1,17 @@
+function rendering_custom_css() {
+$upload_dir = wp_upload_dir();// getting upload directory
+$styles = wp_get_custom_css(); // getting the content of save css
+if ( $styles || is_customize_preview() ) : // condition
+$type_attr = current_theme_supports( 'html5', 'style' ) ? '' : ' type="text/css"';
+
+$file = file_put_contents($upload_dir['basedir']."/render.css", strip_tags( $styles ) ); // for putting the content of file a respective direcoty
+move_uploaded_file($file, $upload_dir['baseurl']); // finally moving the file in a upload direcoty
+
+endif;
+}
+
+add_action( 'save_post', 'rendering_custom_css' ); // trigger action hook
+
+$upload_path = wp_upload_dir(); 
+wp_enqueue_style ('custom-style',$upload_path['baseurl'] .'/render.css'); // for adding render.css in our theme
+remove_action('wp_head', 'wp_custom_css_cb', 101); // This will remove the css from head section
