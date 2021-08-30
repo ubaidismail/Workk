@@ -1,0 +1,34 @@
+add_action("admin_init", "checkbox_init");
+
+function checkbox_init(){
+  add_meta_box("checkbox", "Add to playlist", "checkbox", "sfwd-courses", "normal", "high");
+}
+
+function checkbox(){
+  global $post;
+  $custom = get_post_custom($post->ID);
+  $field_id = $custom["field_id"][0];
+ ?>
+    
+  <label>Save this post as playlist</label>
+  <?php 
+  $field_id_checked = "";
+  $field_id_value = get_post_meta($post->ID, 'field_id', true);
+  if($field_id_value == "yes") $field_id_checked = 'checked="checked"'; ?>
+    <input type="checkbox" name="field_id" value="yes" <?php echo $field_id_checked; ?> />
+  <?php
+
+}
+
+// Save Meta Details
+add_action('save_post', 'save_details');
+
+function save_details(){
+  global $post;
+
+if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+    return $post->ID;
+}
+
+  update_post_meta($post->ID, "field_id", $_POST["field_id"]);
+}   
